@@ -4,6 +4,8 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Tasks } from '../api/tasks.js';
 
 import Task from './Task.jsx';
+import Navbar from './Navbar.jsx';
+import Helsinki from './Helsinki.jsx';
 
 // App component - represents the whole app
 class App extends Component {
@@ -12,17 +14,30 @@ class App extends Component {
             <Task key={task._id} task={task} />
         ));
     }
+    renderNavbar() {
+        return <Navbar />
+    }
+
+    renderHelsinki (){
+        return <Helsinki />
+    }
 
     render() {
         return (
-            <div className="container">
-                <header>
-                    <h1>Todo List</h1>
-                </header>
-
-                <ul>
-                    {this.renderTasks()}
-                </ul>
+            <div>
+                <div>{this.renderNavbar()}</div>
+                <div className="container">
+                    <div className="card">
+                        <div className="card-title">
+                            <h1>Todo List</h1>
+                        </div>
+                        <div className="card-text">
+                            <ul> {this.renderTasks()} </ul>
+                            {this.renderHelsinki()}
+                        </div>
+                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
             </div>
         );
     }
