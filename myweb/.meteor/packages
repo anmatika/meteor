@@ -21,4 +21,6 @@ insecure                # Allow all DB writes from clients (for prototyping)
 react-meteor-data
 fourseven:scss
 orgztion:meteor-global-tether
-static-html
+accounts-ui
+accounts-password
+blaze-html-templates
