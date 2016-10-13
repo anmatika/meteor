@@ -12,7 +12,7 @@ class Helsinki extends Component {
         var that = this;
         service.prototype.getData()
             .then((response) => {
-                console.log(response.data);
+                console.log(response);
                 that.setState({ data: response.data });
             })
             .catch((error) => {
@@ -24,22 +24,23 @@ class Helsinki extends Component {
         this.getData();
     }
     renderData() {
-        console.log('render data');
-        return this.state.data.map((d) => (<li key={d.id}>{d.title}</li>));
-        /* this.state.data.forEach((d)=> {return console.log(d.title);});*/
-        /* return ( <li></li> );*/
+        return this.state.data.map((d) => (
+            <div key={d.id} className="col-sm-4">
+                <div className="card card-block">
+                    <div className="card-title">
+                        <strong> {d.title}</strong>
+                    </div>
+                    <div className="card-text">
+                        {d.description_short}
+                    </div>
+                </div>
+            </div>
+        ));
     }
     render() {
         return (
-            <div>
-                <div className="card">
-                    <div className="card-title">
-                 <h1>Helsinki List</h1>
-                   </div>
-                    <div className="card-text">
-                        <ul> {this.renderData()} </ul>
-                    </div>
-                </div>
+            <div className="row">
+                {this.renderData()}
             </div>
         );
     }

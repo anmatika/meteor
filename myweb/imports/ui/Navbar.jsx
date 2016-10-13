@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import { Router, Route, Link } from 'react-router';
 
 class Navbar extends Component {
 
@@ -10,13 +11,13 @@ class Navbar extends Component {
                 <a className="navbar-brand"><span><img src="onenote-logo-32x32.png" /></span> Web</a>
                 <ul className="nav navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link"><i className="fa fa-home"></i> Home <span className="sr-only">(current)</span></a>
+                        <Link className="nav-link" to="/"><i className="fa fa-home"></i> Home <span className="sr-only">(current)</span></Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link"><i className="fa fa-bar-chart"></i> Stats</a>
+                        <Link className="nav-link" to="/helsinki"><i className="fa fa-bar-chart"></i>Helsinki</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link"><i className="fa fa-info-circle"></i> About</a>
+                        <Link className="nav-link" to="/tasks"><i className="fa fa-info-circle"></i>Tasks</Link>
                     </li>
                 </ul>
                 <ul className="nav navbar-nav pull-right">
