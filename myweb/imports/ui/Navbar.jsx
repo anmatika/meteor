@@ -1,14 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Router, Route, Link } from 'react-router';
+import { Link } from 'react-router';
 
 class Navbar extends Component {
 
     render() {
         return (
             <nav className="navbar-main navbar navbar-dark navbar-full bg-inverse">
-
-                <a className="navbar-brand"><span><img src="onenote-logo-32x32.png" /></span> Web</a>
+                    <a className="navbar-brand"> Web</a>
                 <ul className="nav navbar-nav">
                     <li className="nav-item">
                         <Link className="nav-link" to="/"><i className="fa fa-home"></i> Home <span className="sr-only">(current)</span></Link>
@@ -25,7 +24,6 @@ class Navbar extends Component {
                         <span className="nav-link"></span>
                     </li>
                 </ul>
-
             </nav>
         );
     }
