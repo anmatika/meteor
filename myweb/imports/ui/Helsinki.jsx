@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-import axios from 'axios';
-import service from './OpenDataService.jsx';
+import openDataService from './OpenDataService';
 
 class Helsinki extends Component {
     constructor() {
@@ -10,7 +9,7 @@ class Helsinki extends Component {
     }
     getData(){
         var that = this;
-        service.prototype.getData()
+        openDataService.prototype.getHelsinkiPalvelurekisteri()
             .then((response) => {
                 console.log(response);
                 that.setState({ data: response.data });
