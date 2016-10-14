@@ -8,7 +8,7 @@ import {
 
 // route components
 import App from '../../ui/containers/App.jsx';
-import NotFoundPage from '../../ui/pages/notFoundPage.jsx';
+import NotFoundPage from '../../ui/pages/NotFoundPage.jsx';
 import Helsinki from '../../ui/pages/Helsinki.jsx';
 import Vantaa from '../../ui/pages/Vantaa.jsx';
 import Tasks from '../../ui/pages/Tasks.jsx';
