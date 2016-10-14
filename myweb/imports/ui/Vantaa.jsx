@@ -30,7 +30,10 @@ class Vantaa extends Component {
                     </div>
                     <div className="card-text">
                         <ul className="list-group">
+                            <li className="list-group-item">{d.ammattiala}</li>
                             <li className="list-group-item">{d.organisaatio}</li>
+                            <li className="list-group-item">{d.osoite}</li>
+                            <li className="list-group-item">{d.haku_paattyy_pvm}</li>
                             <li className="list-group-item"><a rel="external" href={d.linkki}>{ d.linkki }</a></li>
                         </ul>
                     </div>
