@@ -5,15 +5,15 @@ Meteor.methods({
         // check(text, String);
 
         // Make sure the user is logged in before inserting a task
-        // if (! this.userId) {
-        //     throw new Meteor.Error('not-authorized');
-        // }
+        if (! this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
 
         TaskItems.insert({
             text,
             createdAt: new Date(),
-            owner: this.userId,
-            // username: Meteor.users.findOne(this.userId).username,
+            owner: Meteor.userId(),
+            username: Meteor.users.findOne(this.userId).username,
         });
     },
     'tasks.remove'(taskId) {

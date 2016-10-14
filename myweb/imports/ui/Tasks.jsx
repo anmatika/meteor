@@ -42,12 +42,14 @@ class Tasks extends Component {
 }
 
 Tasks.propTypes = {
-    tasks: PropTypes.array.isRequired
+    tasks: PropTypes.array.isRequired,
+    currentUser: PropTypes.object
 };
 
 export default createContainer(() => {
     return {
         /* tasks: TaskItems.find({}).fetch()*/
-        tasks: TaskItems.find({}, { sort: { createdAt: -1 } }).fetch()
+        tasks: TaskItems.find({}, { sort: { createdAt: -1 } }).fetch(),
+        currentUser: Meteor.user()
     };
 }, Tasks);

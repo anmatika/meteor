@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Link } from 'react-router';
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 class Navbar extends Component {
 
@@ -16,12 +17,15 @@ class Navbar extends Component {
                         <Link className="nav-link" to="/helsinki"><i className="fa fa-bar-chart"></i>Helsinki</Link>
                     </li>
                     <li className="nav-item">
+                        <Link className="nav-link" to="/vantaa"><i className="fa fa-bar-chart"></i>Vantaa</Link>
+                    </li>
+                    <li className="nav-item">
                         <Link className="nav-link" to="/tasks"><i className="fa fa-info-circle"></i>Tasks</Link>
                     </li>
                 </ul>
-                <ul className="nav navbar-nav pull-right">
+                <ul className="nav navbar-nav pull-right nav-login">
                     <li className="nav-item active">
-                        <span className="nav-link"></span>
+                        <span className="nav-link"><AccountsUIWrapper /></span>
                     </li>
                 </ul>
             </nav>
