@@ -7,12 +7,12 @@ import {
 } from 'react-router';
 
 // route components
-import App from '../../ui/App.jsx';
-import NotFoundPage from '../../ui/notFoundPage.jsx';
-import Helsinki from '../../ui/Helsinki.jsx';
-import Vantaa from '../../ui/Vantaa.jsx';
-import Tasks from '../../ui/Tasks.jsx';
-import FrontPage from '../../ui/FrontPage.jsx';
+import App from '../../ui/containers/App.jsx';
+import NotFoundPage from '../../ui/pages/notFoundPage.jsx';
+import Helsinki from '../../ui/pages/Helsinki.jsx';
+import Vantaa from '../../ui/pages/Vantaa.jsx';
+import Tasks from '../../ui/pages/Tasks.jsx';
+import FrontPage from '../../ui/pages/FrontPage.jsx';
 
 export const renderRoutes = () => (
 <Router history={browserHistory}>

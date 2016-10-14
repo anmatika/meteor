@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-import openDataService from './OpenDataService';
+import openDataService from '../OpenDataService';
 
 class Helsinki extends Component {
     constructor() {

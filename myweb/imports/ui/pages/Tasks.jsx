@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { TaskItems } from '../api/tasks.js';
-import Task from './Task.jsx';
+import { TaskItems } from '../../api/tasks.js';
+import Task from '../components/Task.jsx';
 
 // App component - represents the whole app
 class Tasks extends Component {
