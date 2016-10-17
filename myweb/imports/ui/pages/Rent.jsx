@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
 import GoogleMap from '../components/GoogleMaps.jsx';
-
+/* import FaBeer from 'react-icons/fa/beer';
+ * */
 class Rent extends Component {
     constructor() {
         super();
@@ -39,6 +40,7 @@ class Rent extends Component {
             let cityName = d[0];
             return <div key={d[0]} className="card card-block">
                         <div className="card-title" onClick={this.getDetails.bind(this, cityName)}>
+                            {/* <FaBeer /> */}
                             <strong>{cityName}</strong>
                         </div>
                         <div className="card-text">
@@ -68,9 +70,9 @@ class Rent extends Component {
         }
         return (
             <div id="modal" className="modal fade clearfix">
-                <div className="modal-dialog">
+                <div className="modal-dialog modal-lg">
                     <div className="modal-content">
-                        <div className="modal-header">
+                        <div className="modal-header clearfix">
                             <strong>{this.state.cityDetails.name}</strong></div>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
