@@ -20,6 +20,7 @@ class Rent extends Component {
             });
     }
     getDetails(cityName) {
+        $('#modal').modal('show');
         var that = this;
         rentsWatchService.prototype.getCityDetails(cityName)
             .then((response) => {
@@ -39,11 +40,10 @@ class Rent extends Component {
             return <div key={d[0]} className="card card-block">
                         <div className="card-title" onClick={this.getDetails.bind(this, cityName)}>
                             <strong>{cityName}</strong>
-                            {/* <strong> { cityName }</strong> */}
                         </div>
                         <div className="card-text">
                             <ul className="list-group">
-                                <li className="list-group-item">{d[1]} EUR/square meter</li>
+                                <li className="list-group-item">Price per sqm: {d[1].toFixed(2)} EUR</li>
                             </ul>
                         </div>
                    </div>;
@@ -59,33 +59,57 @@ class Rent extends Component {
         let latlon = this.state.cityDetails != null ? this.state.cityDetails.latitude + "," + this.state.cityDetails.longitude : '';
         let src = "https://www.google.com/maps/embed/v1/view?key=AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o&zoom=8&center=" + latlon;
 
-        return (<GoogleMap iframe='iframe' src={src} height="600" width="450" frameBorder="0" />);
+        return (<GoogleMap iframe='iframe' src={src} height="400" width="95%" frameBorder="0" />);
     }
 
     renderCityDetails() {
+        if (this.state.cityDetails == null) {
+            return (<div></div>);
+        }
         return (
-            <ul className="list-group">
-                <li className="list-group-item">{ this.state.cityDetails != null ? 'name: ' + this.state.cityDetails.name : '' }</li>
-                <li className="list-group-item"> { this.state.cityDetails != null ? 'avg. price: ' + this.state.cityDetails.avgPricePerSqm : '' }</li>
-                <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.latitude : '' }</li>
-                <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.longitude : '' }</li>
-                <li className="list-group-item"> { this.state.cityDetails != null ? new Date(this.state.cityDetails.lastSnapshot * 1000).toString() : '' }</li>
-            </ul>
+            <div id="modal" className="modal fade clearfix">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <strong>{this.state.cityDetails.name}</strong></div>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        <div className="modal-body">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-sm-6">
+                                        {this.renderGoogleMaps()}
+                                    </div>
+                                    <div className="col-sm-6">
+                                        <div className="card card-block">
+                                            <div className="card-title"><strong>{this.state.cityDetails.name}</strong></div>
+                                            <div className="card-text">
+                                                <ul className="list-group">
+                                                    <li className="list-group-item"> { 'avg price per sqm: ' + this.state.cityDetails.avgPricePerSqm.toFixed(2) + ' EUR' }</li>
+                                                    <li className="list-group-item"> { 'total: ' + this.state.cityDetails.total }</li>
+                                                    <li className="list-group-item"> { 'inequality index: ' + this.state.cityDetails.inequalityIndex.toFixed(2) }</li>
+                                                    <li className="list-group-item"> { 'radius: ' + this.state.cityDetails.radius }</li>
+                                                    <li className="list-group-item"> { 'lat: ' + this.state.cityDetails.latitude }</li>
+                                                    <li className="list-group-item"> { 'lon: ' + this.state.cityDetails.longitude }</li>
+                                                    <li className="list-group-item"> { 'last snapshot: ' + new Date(this.state.cityDetails.lastSnapshot * 1000) }</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
     }
 
     render() {
         return(
-
             <div className="row">
-                <div className="col-sm-6">
-                    {this.renderGoogleMaps()}
-                </div>
-                <div className="col-sm-6">
-                    <div className="card card-block">
-                        {this.renderCityDetails()}
-                    </div>
-                </div>
+                {this.renderCityDetails()}
                 <div className="col-sm-12">
                     {this.renderData()}
                 </div>
