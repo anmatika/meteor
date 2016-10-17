@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
+import GoogleMap from '../components/GoogleMaps.jsx';
 
 class Rent extends Component {
     constructor() {
@@ -51,6 +52,8 @@ class Rent extends Component {
         return (<div>{cities}</div>);
     }
     render() {
+        let latlon = this.state.cityDetails != null ? this.state.cityDetails.latitude + "," + this.state.cityDetails.longitude : '';
+        let src = "https://www.google.com/maps/embed/v1/view?key=AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o&zoom=8&center=" + latlon;
         return (
 
             <div className="row">
@@ -63,6 +66,7 @@ class Rent extends Component {
                             <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.longitude : '' }</li>
                             <li className="list-group-item"> { this.state.cityDetails != null ? new Date(this.state.cityDetails.lastSnapshot * 1000).toString() : '' }</li>
                         </ul>
+                        <GoogleMap iframe='iframe' src={src} height="600" width="450"/>
                         {/* <iframe
                             width="600"
                             height="450"
