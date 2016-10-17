@@ -8,9 +8,9 @@ class GoogleMap extends Component {
 
         return(
             <div>
-            <Iframe src={this.props.src} height={this.props.height} width={this.props.width}/>
+            <Iframe src={this.props.src} height={this.props.height} width={this.props.width} style={{border:0}} frameBorder={this.props.frameborder}/>
             </div>
-        )
+        );
     }
 }
 

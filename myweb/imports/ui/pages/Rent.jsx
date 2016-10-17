@@ -51,30 +51,42 @@ class Rent extends Component {
 
         return (<div>{cities}</div>);
     }
-    render() {
+    renderGoogleMaps() {
+
+        if(this.state.cityDetails == null) {
+            return (<div></div>);
+        }
         let latlon = this.state.cityDetails != null ? this.state.cityDetails.latitude + "," + this.state.cityDetails.longitude : '';
         let src = "https://www.google.com/maps/embed/v1/view?key=AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o&zoom=8&center=" + latlon;
+
+        return (<GoogleMap iframe='iframe' src={src} height="600" width="450" frameBorder="0" />);
+    }
+
+    renderCityDetails() {
         return (
+            <ul className="list-group">
+                <li className="list-group-item">{ this.state.cityDetails != null ? 'name: ' + this.state.cityDetails.name : '' }</li>
+                <li className="list-group-item"> { this.state.cityDetails != null ? 'avg. price: ' + this.state.cityDetails.avgPricePerSqm : '' }</li>
+                <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.latitude : '' }</li>
+                <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.longitude : '' }</li>
+                <li className="list-group-item"> { this.state.cityDetails != null ? new Date(this.state.cityDetails.lastSnapshot * 1000).toString() : '' }</li>
+            </ul>
+        );
+    }
+
+    render() {
+        return(
 
             <div className="row">
-                <div className="col-sm-12">
+                <div className="col-sm-6">
+                    {this.renderGoogleMaps()}
+                </div>
+                <div className="col-sm-6">
                     <div className="card card-block">
-                        <ul className="list-group">
-                            <li className="list-group-item">{ this.state.cityDetails != null ? 'name: ' + this.state.cityDetails.name : '' }</li>
-                            <li className="list-group-item"> { this.state.cityDetails != null ? 'avg. price: ' + this.state.cityDetails.avgPricePerSqm : '' }</li>
-                            <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.latitude : '' }</li>
-                            <li className="list-group-item"> { this.state.cityDetails != null ? this.state.cityDetails.longitude : '' }</li>
-                            <li className="list-group-item"> { this.state.cityDetails != null ? new Date(this.state.cityDetails.lastSnapshot * 1000).toString() : '' }</li>
-                        </ul>
-                        <GoogleMap iframe='iframe' src={src} height="600" width="450"/>
-                        {/* <iframe
-                            width="600"
-                            height="450"
-                            frameBorder="0" style="border:0"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o
-                            &q=Space+Needle,Seattle+WA" allowfullscreen>
-                            </iframe> */}
+                        {this.renderCityDetails()}
                     </div>
+                </div>
+                <div className="col-sm-12">
                     {this.renderData()}
                 </div>
             </div>
