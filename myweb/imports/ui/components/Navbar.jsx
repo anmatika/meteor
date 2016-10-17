@@ -14,6 +14,9 @@ class Navbar extends Component {
                         <Link className="nav-link" to="/"><i className="fa fa-home"></i> Home <span className="sr-only">(current)</span></Link>
                     </li>
                     <li className="nav-item">
+                        <Link className="nav-link" to="/rent"><i className="fa fa-bar-chart"></i>Rent</Link>
+                    </li>
+                    <li className="nav-item">
                         <Link className="nav-link" to="/helsinki"><i className="fa fa-bar-chart"></i>Helsinki</Link>
                     </li>
                     <li className="nav-item">

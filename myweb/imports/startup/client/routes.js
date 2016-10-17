@@ -13,11 +13,13 @@ import Helsinki from '../../ui/pages/Helsinki.jsx';
 import Vantaa from '../../ui/pages/Vantaa.jsx';
 import Tasks from '../../ui/pages/Tasks.jsx';
 import FrontPage from '../../ui/pages/FrontPage.jsx';
+import Rent from '../../ui/pages/Rent.jsx';
 
 export const renderRoutes = () => (
 <Router history={browserHistory}>
     <Route path="/" component={App} >
         <IndexRoute component={FrontPage} />
+        <Route path="rent" component={Rent}/>
         <Route path="helsinki" component={Helsinki}/>
         <Route path="vantaa" component={Vantaa}/>
         <Route path="tasks" component={Tasks}/>
