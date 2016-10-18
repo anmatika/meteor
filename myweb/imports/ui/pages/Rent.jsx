@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
 import GoogleMap from '../components/GoogleMaps.jsx';
-/* import FaBeer from 'react-icons/fa/beer';
- * */
+/* import FaBeer from 'react-icons/fa/beer';*/
+let Money = require('react-icons/lib/fa/money');
+
 class Rent extends Component {
     constructor() {
         super();
@@ -38,10 +39,12 @@ class Rent extends Component {
     renderData() {
         let cities = this.state.data.map((d) => {
             let cityName = d[0];
-            return <div key={d[0]} className="card card-block">
-                        <div className="card-title" onClick={this.getDetails.bind(this, cityName)}>
-                            {/* <FaBeer /> */}
-                            <strong>{cityName}</strong>
+            return <div key={d[0]} className="card card-block city" onClick={this.getDetails.bind(this, cityName)}>
+                        <div className="card-title">
+                            <div className="city__name">
+                                <Money />&nbsp;
+                                <strong>{cityName}</strong>
+                            </div>
                         </div>
                         <div className="card-text">
                             <ul className="list-group">
@@ -69,7 +72,7 @@ class Rent extends Component {
             return (<div></div>);
         }
         return (
-            <div id="modal" className="modal fade clearfix">
+            <div id="modal" className="modal in fade clearfix">
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header clearfix">

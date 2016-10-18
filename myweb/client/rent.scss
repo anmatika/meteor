@@ -1,0 +1,10 @@
+.city {
+    cursor: pointer;
+    &__name {
+        display: flex;
+        align-items: center;
+    }
+    &:hover {
+        background-color: #efefef;
+    }
+}
