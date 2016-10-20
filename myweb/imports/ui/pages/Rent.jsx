@@ -68,15 +68,23 @@ class Rent extends Component {
     }
 
     renderCityDetails() {
-        if (this.state.cityDetails == null) {
-            return (<div></div>);
+        let name, avgprice, total, inequalityIndex, radius, latitude, longitude, lastSnapshot;
+        if (this.state.cityDetails != null) {
+            name = this.state.cityDetails.name;
+            avgprice = this.state.cityDetails.avgPricePerSqm;
+            total = this.state.cityDetails.total;
+            inequalityIndex = this.state.cityDetails.inequalityIndex;
+            radius = this.state.cityDetails.radius;
+            latitude = this.state.cityDetails.latitude;
+            longitude = this.state.cityDetails.longitude;
+            lastSnapshot = new Date(this.state.cityDetails.lastSnapshot * 1000).toString();
         }
         return (
-            <div id="modal" className="modal in fade clearfix">
+            <div id="modal" className="modal hide fade clearfix">
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header clearfix">
-                            <strong>{this.state.cityDetails.name}</strong></div>
+                            <strong>{name}</strong></div>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -88,16 +96,16 @@ class Rent extends Component {
                                     </div>
                                     <div className="col-sm-6">
                                         <div className="card card-block">
-                                            <div className="card-title"><strong>{this.state.cityDetails.name}</strong></div>
+                                            <div className="card-title"><strong>{name}</strong></div>
                                             <div className="card-text">
                                                 <ul className="list-group">
-                                                    <li className="list-group-item"> { 'avg price per sqm: ' + this.state.cityDetails.avgPricePerSqm.toFixed(2) + ' EUR' }</li>
-                                                    <li className="list-group-item"> { 'total: ' + this.state.cityDetails.total }</li>
-                                                    <li className="list-group-item"> { 'inequality index: ' + this.state.cityDetails.inequalityIndex.toFixed(2) }</li>
-                                                    <li className="list-group-item"> { 'radius: ' + this.state.cityDetails.radius }</li>
-                                                    <li className="list-group-item"> { 'lat: ' + this.state.cityDetails.latitude }</li>
-                                                    <li className="list-group-item"> { 'lon: ' + this.state.cityDetails.longitude }</li>
-                                                    <li className="list-group-item"> { 'last snapshot: ' + new Date(this.state.cityDetails.lastSnapshot * 1000) }</li>
+                                                    <li className="list-group-item"> { 'avg price per sqm: ' + avgprice }</li>
+                                                    <li className="list-group-item"> { 'total: ' + total }</li>
+                                                    <li className="list-group-item"> { 'inequality index: ' + inequalityIndex}</li>
+                                                    <li className="list-group-item"> { 'radius: ' + radius }</li>
+                                                    <li className="list-group-item"> { 'lat: ' + latitude }</li>
+                                                    <li className="list-group-item"> { 'lon: ' + longitude }</li>
+                                                    <li className="list-group-item"> { 'last snapshot: ' + lastSnapshot }</li>
                                                 </ul>
                                             </div>
                                         </div>
