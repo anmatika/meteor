@@ -3,7 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
 import GoogleMap from '../components/GoogleMaps.jsx';
 /* import FaBeer from 'react-icons/fa/beer';*/
-let Money = require('react-icons/lib/fa/money');
+let Money = require('react-icons/fa/money');
 
 class Rent extends Component {
     constructor() {

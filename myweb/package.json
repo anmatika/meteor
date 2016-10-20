@@ -2,7 +2,7 @@
   "name": "myweb",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+  "start": "meteor run"
   },
   "dependencies": {
     "axios": "^0.15.0",
