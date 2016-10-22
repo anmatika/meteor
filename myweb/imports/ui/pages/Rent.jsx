@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
 import GoogleMap from '../components/GoogleMaps.jsx';
 import GMap from '../components/Gmap.jsx';
+import axios from 'axios';
 /* import FaBeer from 'react-icons/fa/beer';*/
 let Money = require('react-icons/lib/fa/money');
 
@@ -12,19 +13,26 @@ class Rent extends Component {
         this.state = { citiesByAvgPrice: [], cities: [] };
 
         let that = this;
-        rentsWatchService.prototype.getCities()
-            .then((response) => {
-                /* debugger;
-                 * let obj = [];
-                 * response.map(r => {
-                 *     obj = Object.assign(obj, r.data)
-                 * });*/
-                let cities = Object.assign(response[0].data, response[1].data)
-                that.setState({ cities: cities });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        let cities = [];
+            rentsWatchService.prototype.getCities(3)
+                                .then(axios.spread((a, b, c) => {
+                                    /* debugger;
+                                    * let obj = [];
+                                    * response.map(r => {
+                                    *     obj = Object.assign(obj, r.data)
+                                    * });*/
+                                    console.log(a.data)
+                                    console.log(b.data)
+                                    console.log(c.data)
+                                    /* console.log(response[1].data)*/
+                                    /* let cities = Object.assign(response[0].data, response[1].data)*/
+                                    cities = [...a.data, ...b.data, ...c.data]
+                                    console.log('cities', cities)
+                                    that.setState({ cities: cities });
+                                }))
+                                .catch((error) => {
+                                    console.log(error);
+                                });
     }
     getCitiesRankingByAvereagePrices(){
         var that = this;

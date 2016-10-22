@@ -1,5 +1,4 @@
-import axios from 'axios';
-class RentsWatchService {
+import axios from 'axios'; class RentsWatchService {
 
     getCitiesRankingByAveragePrices() {
         return axios.get('http://api.rentswatch.com/api/cities/ranking?indicator=avgPricePerSqm');
@@ -7,10 +6,16 @@ class RentsWatchService {
     getCityDetails(city) {
         return axios.get('http://api.rentswatch.com/api/cities/search?q=' + city);
     }
-    getCities(){
-        return axios.all([this.getCityPath(0), this.getCityPath(50)]);
+    getCities(batchCount){
+        let batches = [];
+        for(var i=0; i<batchCount*50; i=i+50)
+        {
+            batches.push(this.getCitiesByOffset(i));
+        }
+
+        return axios.all(batches);
     }
-    getCityPath(offset){
+    getCitiesByOffset(offset){
         return axios.get('http://api.rentswatch.com/api/cities?offset=' + offset);
     }
 }
