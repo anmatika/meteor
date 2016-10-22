@@ -26,6 +26,7 @@ class GMap extends Component {
         // have to define google maps event listeners here too
         // because we can't add listeners on the map until its created
         google.maps.event.addListener(this.map, 'zoom_changed', () => this.handleZoomChange())
+
     }
 
     // clean up event listeners when component unmounts
@@ -49,22 +50,33 @@ class GMap extends Component {
     }
 
     createMarkers() {
-
+        var infowindow = new google.maps.InfoWindow();
         this.props.cities.forEach(city => {
-            return new google.maps.Marker({
-                    position: new google.maps.LatLng(city.latitude, city.longitude),
-                    map: this.map,
-                    title: city.name
-                })
+                let marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(city.latitude, city.longitude),
+                        map: this.map,
+                    })
+                let contentString = `<div class='card'>
+                                        <div class="card-title"><strong>${city.name}</strong> </div>
+                                     </div>`;
+
+                google.maps.event.addListener(marker, 'mouseover', function() {
+                    infowindow.setContent(contentString);
+                    infowindow.open(this.map, marker);
+                });
+
+                google.maps.event.addListener(marker, 'mouseout', function() {
+                    infowindow.close();
+                });
             })
     }
 
-    createInfoWindow() {
+    createInfoWindow(marker) {
         let contentString = "<div class='InfoWindow'>I'm a Window that contains Info Yay</div>"
         return new google.maps.InfoWindow({
             map: this.map,
-            anchor: this.marker,
-            content: contentString
+            anchor: marker,
+            content: marker.title
         })
     }
 
