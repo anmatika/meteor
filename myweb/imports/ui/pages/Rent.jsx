@@ -11,28 +11,20 @@ class Rent extends Component {
     constructor() {
         super();
         this.state = { citiesByAvgPrice: [], cities: [] };
+        this.getCities();
 
+    }
+    getCities(){
         let that = this;
-        let cities = [];
-            rentsWatchService.prototype.getCities(3)
-                                .then(axios.spread((a, b, c) => {
-                                    /* debugger;
-                                    * let obj = [];
-                                    * response.map(r => {
-                                    *     obj = Object.assign(obj, r.data)
-                                    * });*/
-                                    console.log(a.data)
-                                    console.log(b.data)
-                                    console.log(c.data)
-                                    /* console.log(response[1].data)*/
-                                    /* let cities = Object.assign(response[0].data, response[1].data)*/
-                                    cities = [...a.data, ...b.data, ...c.data]
-                                    console.log('cities', cities)
-                                    that.setState({ cities: cities });
-                                }))
-                                .catch((error) => {
-                                    console.log(error);
-                                });
+
+        rentsWatchService.prototype.getCities(3)
+            .then(axios.spread((a, b, c) => {
+                let cities = [...a.data, ...b.data, ...c.data]
+                that.setState({ cities: cities });
+            }))
+            .catch((error) => {
+                console.log(error);
+            });
     }
     getCitiesRankingByAvereagePrices(){
         var that = this;
