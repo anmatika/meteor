@@ -53,7 +53,8 @@ class GMap extends Component {
         this.props.cities.forEach(city => {
             return new google.maps.Marker({
                     position: new google.maps.LatLng(city.latitude, city.longitude),
-                    map: this.map
+                    map: this.map,
+                    title: city.name
                 })
             })
     }
