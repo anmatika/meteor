@@ -9,14 +9,29 @@ let Money = require('react-icons/lib/fa/money');
 class Rent extends Component {
     constructor() {
         super();
-        this.state = { data: [] };
+        this.state = { citiesByAvgPrice: [], cities: [] };
+
+        let that = this;
+        rentsWatchService.prototype.getCities()
+            .then((response) => {
+                /* debugger;
+                 * let obj = [];
+                 * response.map(r => {
+                 *     obj = Object.assign(obj, r.data)
+                 * });*/
+                let cities = Object.assign(response[0].data, response[1].data)
+                that.setState({ cities: cities });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
-    getData(){
+    getCitiesRankingByAvereagePrices(){
         var that = this;
         rentsWatchService.prototype.getCitiesRankingByAveragePrices()
             .then((response) => {
                 console.log(response);
-                that.setState({ data: response.data });
+                that.setState({ citiesByAvgPrice: response.data });
             })
             .catch((error) => {
                 console.log(error);
@@ -35,10 +50,10 @@ class Rent extends Component {
             });
     }
     componentDidMount() {
-        this.getData();
+        this.getCitiesRankingByAvereagePrices();
     }
     renderData() {
-        let cities = this.state.data.map((d) => {
+        let citiesByAvgPrice = this.state.citiesByAvgPrice.map((d) => {
             let cityName = d[0];
             return <div key={d[0]} className="card card-block city" onClick={this.getDetails.bind(this, cityName)}>
                         <div className="card-title">
@@ -55,7 +70,7 @@ class Rent extends Component {
                    </div>;
         });
 
-        return (<div>{cities}</div>);
+        return (<div>{citiesByAvgPrice}</div>);
     }
     renderGoogleMaps() {
 
@@ -121,8 +136,11 @@ class Rent extends Component {
     }
 
     renderMap() {
-        let initialCenter = { lng: -90.1056957, lat: 29.9717272 };
-        return(<GMap initialCenter={initialCenter} />);
+        if (this.state.cities.length === 0) {
+           return (<div></div>)
+        }
+        let initialCenter = { lng: 13.41053, lat: 52.52437 };
+        return(<GMap initialCenter={initialCenter} cities={this.state.cities} />);
     }
 
     render() {

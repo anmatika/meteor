@@ -4,23 +4,23 @@ class GMap extends Component {
     constructor(){
         super();
         this.state = {
-            zoom: 10
+            zoom: 4
         };
     }
     render() {
-        return  <div className = "GMap" >
-                    <div className = 'UpdatedText'>
-                        <p> Current Zoom: {this.state.zoom} </p>
+        return <div className="GMap" >
+                    <div className='UpdatedText'>
+                        <p>Current Zoom: {this.state.zoom}</p>
                     </div>
-                    <div className = 'GMap-canvas' ref = "mapCanvas"> </div>
-                </div>
+                    <div className='GMap-canvas' ref="mapCanvas"></div>
+               </div>
     }
 
     componentDidMount() {
         // create the map, marker and infoWindow after the component has
         // been rendered because we need to manipulate the DOM for Google =(
         this.map = this.createMap()
-        this.marker = this.createMarker()
+        this.marker = this.createMarkers()[0]
         this.infoWindow = this.createInfoWindow()
 
         // have to define google maps event listeners here too
@@ -48,11 +48,14 @@ class GMap extends Component {
         )
     }
 
-    createMarker() {
-        return new google.maps.Marker({
-            position: this.mapCenter(),
-            map: this.map
-        })
+    createMarkers() {
+
+        this.props.cities.forEach(city => {
+            return new google.maps.Marker({
+                    position: new google.maps.LatLng(city.latitude, city.longitude),
+                    map: this.map
+                })
+            })
     }
 
     createInfoWindow() {
