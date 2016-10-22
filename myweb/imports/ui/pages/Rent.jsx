@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
 import GoogleMap from '../components/GoogleMaps.jsx';
+import GMap from '../components/Gmap.jsx';
 /* import FaBeer from 'react-icons/fa/beer';*/
 let Money = require('react-icons/lib/fa/money');
 
@@ -119,12 +120,20 @@ class Rent extends Component {
         );
     }
 
+    renderMap() {
+        let initialCenter = { lng: -90.1056957, lat: 29.9717272 };
+        return(<GMap initialCenter={initialCenter} />);
+    }
+
     render() {
         return(
             <div className="row">
-                {this.renderCityDetails()}
+                { this.renderCityDetails()}
                 <div className="col-sm-12">
-                    {this.renderData()}
+                    { this.renderMap() }
+                </div>
+                <div className="col-sm-12">
+                    { this.renderData() }
                 </div>
             </div>
         );
