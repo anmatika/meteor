@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-class GoogleMap extends Component {
+class GoogleMapIFrame extends Component {
 
     render() {
         var Iframe = this.props.iframe;
@@ -17,4 +17,4 @@ class GoogleMap extends Component {
 export default createContainer(() => {
     return {
     };
-}, GoogleMap);
+}, GoogleMapIFrame);

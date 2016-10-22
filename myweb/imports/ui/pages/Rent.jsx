@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
-import GoogleMap from '../components/GoogleMaps.jsx';
+import GoogleMapIFrame from '../components/GoogleMapIFrame.jsx';
 import GMap from '../components/Gmap.jsx';
 import axios from 'axios';
-/* import FaBeer from 'react-icons/fa/beer';*/
-let Money = require('react-icons/lib/fa/money');
+import constants from '../services/constants.js';
+let Home = require('react-icons/lib/fa/home');
 
 class Rent extends Component {
     constructor() {
         super();
         this.state = { citiesByAvgPrice: [], cities: [] };
         this.getCities();
-
     }
+
     getCities(){
         let that = this;
 
@@ -26,6 +26,7 @@ class Rent extends Component {
                 console.log(error);
             });
     }
+
     getCitiesRankingByAvereagePrices(){
         var that = this;
         rentsWatchService.prototype.getCitiesRankingByAveragePrices()
@@ -37,6 +38,7 @@ class Rent extends Component {
                 console.log(error);
             });
     }
+
     getDetails(cityName) {
         $('#modal').modal('show');
         var that = this;
@@ -49,16 +51,18 @@ class Rent extends Component {
                 console.log(error);
             });
     }
+
     componentDidMount() {
         this.getCitiesRankingByAvereagePrices();
     }
+
     renderData() {
         let citiesByAvgPrice = this.state.citiesByAvgPrice.map((d) => {
             let cityName = d[0];
             return <div key={d[0]} className="card card-block city" onClick={this.getDetails.bind(this, cityName)}>
                         <div className="card-title">
                             <div className="city__name">
-                                <Money />&nbsp;
+                                <Home />&nbsp;
                                 <strong>{cityName}</strong>
                             </div>
                         </div>
@@ -72,6 +76,7 @@ class Rent extends Component {
 
         return (<div>{citiesByAvgPrice}</div>);
     }
+
     renderGoogleMaps() {
 
         if(this.state.cityDetails == null) {
@@ -139,8 +144,7 @@ class Rent extends Component {
         if (this.state.cities.length === 0) {
            return (<div></div>)
         }
-        let initialCenter = { lng: 13.41053, lat: 52.52437 };
-        return(<GMap initialCenter={initialCenter} cities={this.state.cities} />);
+        return(<GMap initialCenter={constants.berlinLocation} cities={this.state.cities} />);
     }
 
     render() {
@@ -157,6 +161,7 @@ class Rent extends Component {
         );
     }
 }
+
 export default createContainer(() => {
     return {};
 }, Rent);
