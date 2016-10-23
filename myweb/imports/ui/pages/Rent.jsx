@@ -73,7 +73,6 @@ class Rent extends Component {
                         </div>
                    </div>;
         });
-
         return (<div>{citiesByAvgPrice}</div>);
     }
 
@@ -85,7 +84,7 @@ class Rent extends Component {
         let latlon = this.state.cityDetails != null ? this.state.cityDetails.latitude + "," + this.state.cityDetails.longitude : '';
         let src = "https://www.google.com/maps/embed/v1/view?key=AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o&zoom=8&center=" + latlon;
 
-        return (<GoogleMap iframe='iframe' src={src} height="400" width="95%" frameBorder="0" />);
+        return (<GoogleMapIFrame iframe='iframe' src={src} height="400" width="95%" frameBorder="0" />);
     }
 
     renderCityDetails() {

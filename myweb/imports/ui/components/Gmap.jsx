@@ -56,9 +56,18 @@ class GMap extends Component {
                         position: new google.maps.LatLng(city.latitude, city.longitude),
                         map: this.map,
                     })
-                let contentString = `<div class='card'>
-                                        <div class="card-title"><strong>${city.name}</strong> </div>
-                                     </div>`;
+                let contentString = `<div class="card">
+                                        <div class="card-block">
+                                            <h4 class="card-title">${city.name}</h4>
+                                            <p class="card-text"></p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Price per sqm: ${city.avgPricePerSqm.toFixed(2)} EUR</li>
+                                        </ul>
+                                        <div class="card-block">
+                                            <a href="#" class="card-link">Card link</a>
+                                        </div>
+                                    </div>`;
 
                 google.maps.event.addListener(marker, 'mouseover', function() {
                     infowindow.setContent(contentString);
