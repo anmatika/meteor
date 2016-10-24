@@ -1,27 +1,45 @@
 import React, { Component } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import rentsWatchService from '../RentsWatchService.js';
-import GoogleMap from '../components/GoogleMaps.jsx';
-/* import FaBeer from 'react-icons/fa/beer';*/
-let Money = require('react-icons/lib/fa/money');
 let apiKey = "AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o";
+import GoogleMapIFrame from '../components/GoogleMapIFrame.jsx';
+import GMap from '../components/Gmap.jsx';
+import axios from 'axios';
+import constants from '../services/constants.js';
+let Home = require('react-icons/lib/fa/home');
 
 class Rent extends Component {
     constructor() {
         super();
-        this.state = { data: [] };
+        this.state = { citiesByAvgPrice: [], cities: [] };
+        this.getCities();
     }
-    getData(){
+
+    getCities(){
+        let that = this;
+
+        rentsWatchService.prototype.getCities(3)
+            .then(axios.spread((a, b, c) => {
+                let cities = [...a.data, ...b.data, ...c.data]
+                that.setState({ cities: cities });
+            }))
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    getCitiesRankingByAvereagePrices(){
         var that = this;
         rentsWatchService.prototype.getCitiesRankingByAveragePrices()
             .then((response) => {
                 console.log(response);
-                that.setState({ data: response.data });
+                that.setState({ citiesByAvgPrice: response.data });
             })
             .catch((error) => {
                 console.log(error);
             });
     }
+
     getDetails(cityName) {
         $('#modal').modal('show');
         var that = this;
@@ -34,16 +52,18 @@ class Rent extends Component {
                 console.log(error);
             });
     }
+
     componentDidMount() {
-        this.getData();
+        this.getCitiesRankingByAvereagePrices();
     }
+
     renderData() {
-        let cities = this.state.data.map((d) => {
+        let citiesByAvgPrice = this.state.citiesByAvgPrice.map((d) => {
             let cityName = d[0];
             return <div key={d[0]} className="card card-block city" onClick={this.getDetails.bind(this, cityName)}>
                         <div className="card-title">
                             <div className="city__name">
-                                <Money />&nbsp;
+                                <Home />&nbsp;
                                 <strong>{cityName}</strong>
                             </div>
                         </div>
@@ -54,9 +74,9 @@ class Rent extends Component {
                         </div>
                    </div>;
         });
-
-        return (<div>{cities}</div>);
+        return (<div>{citiesByAvgPrice}</div>);
     }
+
     renderGoogleMaps() {
 
         if(this.state.cityDetails == null) {
@@ -65,7 +85,7 @@ class Rent extends Component {
         let latlon = this.state.cityDetails != null ? this.state.cityDetails.latitude + "," + this.state.cityDetails.longitude : '';
         let src = "https://www.google.com/maps/embed/v1/view?key=" + apiKey + "&zoom=8&center=" + latlon;
 
-        return (<GoogleMap iframe='iframe' src={src} height="400" width="95%" frameBorder="0" />);
+        return (<GoogleMapIFrame iframe='iframe' src={src} height="400" width="95%" frameBorder="0" />);
     }
 
     renderCityDetails() {
@@ -120,28 +140,28 @@ class Rent extends Component {
         );
     }
 
-    initMap() {
-        console.log ('init map called');
-        let map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 8
-        });
+    renderMap() {
+        if (this.state.cities.length === 0) {
+           return (<div></div>)
+        }
+        return(<GMap initialCenter={constants.berlinLocation} cities={this.state.cities} />);
     }
 
     render() {
-        debugger;
-        let url = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&callback=initMap";
         return(
             <div className="row">
-                <script src={url} async defer></script>
-                {this.renderCityDetails()}
+                { this.renderCityDetails()}
                 <div className="col-sm-12">
-                    {this.renderData()}
+                    { this.renderMap() }
+                </div>
+                <div className="col-sm-12">
+                    { this.renderData() }
                 </div>
             </div>
         );
     }
 }
+
 export default createContainer(() => {
     return {};
 }, Rent);

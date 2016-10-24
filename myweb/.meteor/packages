@@ -24,3 +24,4 @@ orgztion:meteor-global-tether
 accounts-ui
 accounts-password
 blaze-html-templates
+percolate:google-api
