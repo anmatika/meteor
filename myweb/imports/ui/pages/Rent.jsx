@@ -4,6 +4,7 @@ import rentsWatchService from '../RentsWatchService.js';
 import GoogleMap from '../components/GoogleMaps.jsx';
 /* import FaBeer from 'react-icons/fa/beer';*/
 let Money = require('react-icons/lib/fa/money');
+let apiKey = "AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o";
 
 class Rent extends Component {
     constructor() {
@@ -62,7 +63,7 @@ class Rent extends Component {
             return (<div></div>);
         }
         let latlon = this.state.cityDetails != null ? this.state.cityDetails.latitude + "," + this.state.cityDetails.longitude : '';
-        let src = "https://www.google.com/maps/embed/v1/view?key=AIzaSyBfGt6YPMgyIJGJTGJaYsAnCO8iO9G9N9o&zoom=8&center=" + latlon;
+        let src = "https://www.google.com/maps/embed/v1/view?key=" + apiKey + "&zoom=8&center=" + latlon;
 
         return (<GoogleMap iframe='iframe' src={src} height="400" width="95%" frameBorder="0" />);
     }
@@ -119,9 +120,20 @@ class Rent extends Component {
         );
     }
 
+    initMap() {
+        console.log ('init map called');
+        let map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+        });
+    }
+
     render() {
+        debugger;
+        let url = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&callback=initMap";
         return(
             <div className="row">
+                <script src={url} async defer></script>
                 {this.renderCityDetails()}
                 <div className="col-sm-12">
                     {this.renderData()}
