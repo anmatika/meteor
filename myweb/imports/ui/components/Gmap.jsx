@@ -4,7 +4,7 @@ class GMap extends Component {
     constructor(){
         super();
         this.state = {
-            zoom: 4
+            zoom: 5
         };
     }
     render() {
@@ -30,8 +30,7 @@ class GMap extends Component {
         this.map = this.createMap()
 
         this.markers = this.createMarkers()
-        this.createCircles();
-        this.infoWindow = this.createInfoWindow()
+        this.circles = this.createCircles();
 
         // have to define google maps event listeners here too
         // because we can't add listeners on the map until its created
@@ -60,23 +59,46 @@ class GMap extends Component {
     }
 
     createCircles(){
+        let circles = [];
         this.props.cities.forEach(city => {
             let opts = {
                 center: { lat: city.latitude, lng: city.longitude},
-                radius: city.radius
+                radius: city.radius,
+                color: this.getCircleColor(city)
             };
 
-            this.createCircle(opts);
+            let circle = this.createCircle(opts);
+            circles.push(circle);
         });
+        return circles;
+    }
+
+    getCircleColor(city){
+        if(city.avgPricePerSqm < 10){
+            return {
+                fillColor: '#00cc00',
+                strokeColor: '#00cc00',
+            }
+        } else if(city.avgPricePerSqm >= 10 && city.avgPricePerSqm < 15) {
+            return {
+                fillColor: '#ffcc66',
+                strokeColor: '#ffcc66',
+            }
+        }
+
+        return {
+            fillColor: '#FF0000',
+            strokeColor: '#FF0000',
+        }
     }
 
     createCircle(opts) {
 
-        new google.maps.Circle({
-                strokeColor: '#FF0000',
+       return new google.maps.Circle({
+                strokeColor: opts.color.strokeColor,
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: '#FF0000',
+                fillColor: opts.color.fillColor,
                 fillOpacity: 0.35,
                 map: this.map,
                 center: opts.center,
@@ -86,45 +108,41 @@ class GMap extends Component {
 
     createMarkers() {
         let markers = [];
-        var infowindow = new google.maps.InfoWindow();
         this.props.cities.forEach(city => {
                 let marker = new google.maps.Marker({
                         position: new google.maps.LatLng(city.latitude, city.longitude),
                         map: this.map,
                     })
-                let contentString = `<div class="card">
-                                        <div class="card-block">
-                                            <h4 class="card-title">${city.name}</h4>
-                                            <p class="card-text"></p>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Price per sqm: ${city.avgPricePerSqm.toFixed(2)} EUR</li>
-                                        </ul>
-                                        <div class="card-block">
-                                            <a href="#" class="card-link">Card link</a>
-                                        </div>
-                                    </div>`;
-
-                google.maps.event.addListener(marker, 'mouseover', function() {
-                    infowindow.setContent(contentString);
-                    infowindow.open(this.map, marker);
-                });
-
-                google.maps.event.addListener(marker, 'mouseout', function() {
-                    infowindow.close();
-                });
+                this.createInfoWindowForMarker(marker, city);
                 markers.push(marker);
             })
 
         return markers;
     }
 
-    createInfoWindow(marker) {
-        return new google.maps.InfoWindow({
-            map: this.map,
-            anchor: marker,
-            content: marker != null ? marker.title : ''
-        })
+    createInfoWindowForMarker(marker, city){
+        var infowindow = new google.maps.InfoWindow();
+        let contentString = `<div class="card">
+                                <div class="card-block">
+                                    <h4 class="card-title">${city.name}</h4>
+                                    <p class="card-text"></p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Price per sqm: ${city.avgPricePerSqm.toFixed(2)} EUR</li>
+                                </ul>
+                                <div class="card-block">
+                                    <a href="#" class="card-link">Card link</a>
+                                </div>
+                            </div>`;
+
+        google.maps.event.addListener(marker, 'mouseover', function() {
+            infowindow.setContent(contentString);
+            infowindow.open(this.map, marker);
+        });
+
+        google.maps.event.addListener(marker, 'mouseout', function() {
+            infowindow.close();
+        });
     }
 
     handleZoomChange() {
