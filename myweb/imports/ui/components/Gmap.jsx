@@ -17,22 +17,34 @@ class GMap extends Component {
     }
 
     componentDidMount() {
+        $.getScript('https://www.google.com/jsapi', ()=>
+        {
+            google.load('maps', '3', { other_params: 'sensor=false', callback: ()=>
+            {
+                this.init();
+            }});
+        });
+    }
+
+    init(){
+
         // create the map, marker and infoWindow after the component has
         // been rendered because we need to manipulate the DOM for Google =(
         this.map = this.createMap()
-        this.marker = this.createMarkers()[0]
+
+        this.markers = this.createMarkers()
         this.infoWindow = this.createInfoWindow()
 
         // have to define google maps event listeners here too
         // because we can't add listeners on the map until its created
         google.maps.event.addListener(this.map, 'zoom_changed', () => this.handleZoomChange())
-
     }
 
     // clean up event listeners when component unmounts
     componentDidUnMount() {
         google.maps.event.clearListeners(map, 'zoom_changed')
     }
+
 
     createMap() {
         let mapOptions = {
@@ -49,7 +61,19 @@ class GMap extends Component {
         )
     }
 
+    getCircle(magnitude) {
+        return {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: 'red',
+          fillOpacity: .2,
+          scale: Math.pow(2, magnitude) / 2,
+          strokeColor: 'white',
+          strokeWeight: .5
+        };
+     }
+
     createMarkers() {
+        let markers = [];
         var infowindow = new google.maps.InfoWindow();
         this.props.cities.forEach(city => {
                 let marker = new google.maps.Marker({
@@ -77,7 +101,10 @@ class GMap extends Component {
                 google.maps.event.addListener(marker, 'mouseout', function() {
                     infowindow.close();
                 });
+                markers.push(marker);
             })
+
+        return markers;
     }
 
     createInfoWindow(marker) {
