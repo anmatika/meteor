@@ -2,7 +2,9 @@
   "name": "myweb",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "unit-tests": "meteor test --driver-package practicalmeteor:mocha --port 4000",
+    "lint": "eslint ."
   },
   "dependencies": {
     "axios": "^0.15.0",
