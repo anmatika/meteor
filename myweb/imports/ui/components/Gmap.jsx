@@ -33,6 +33,7 @@ class GMap extends Component {
         this.map = this.createMap()
 
         this.markers = this.createMarkers()
+        this.createCircles();
         this.infoWindow = this.createInfoWindow()
 
         // have to define google maps event listeners here too
@@ -61,15 +62,24 @@ class GMap extends Component {
         )
     }
 
-    getCircle(magnitude) {
-        return {
-          path: google.maps.SymbolPath.CIRCLE,
-          fillColor: 'red',
-          fillOpacity: .2,
-          scale: Math.pow(2, magnitude) / 2,
-          strokeColor: 'white',
-          strokeWeight: .5
-        };
+    createCircles(){
+        this.props.cities.forEach(city => {
+            this.createCircle({lat: city.latitude, lng: city.longitude});
+        });
+    }
+
+    createCircle(center) {
+
+        new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: this.map,
+                center: center,
+                radius: 100000
+            });
      }
 
     createMarkers() {
@@ -108,11 +118,10 @@ class GMap extends Component {
     }
 
     createInfoWindow(marker) {
-        let contentString = "<div class='InfoWindow'>I'm a Window that contains Info Yay</div>"
         return new google.maps.InfoWindow({
             map: this.map,
             anchor: marker,
-            content: marker.title
+            content: marker != null ? marker.title : ''
         })
     }
 
