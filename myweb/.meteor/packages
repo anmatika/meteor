@@ -25,3 +25,5 @@ accounts-ui
 accounts-password
 blaze-html-templates
 percolate:google-api
+practicalmeteor:mocha
+dburles:factory

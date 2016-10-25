@@ -9,9 +9,6 @@ class GMap extends Component {
     }
     render() {
         return <div className="GMap" >
-                    <div className='UpdatedText'>
-                        <p>Current Zoom: {this.state.zoom}</p>
-                    </div>
                     <div className='GMap-canvas' ref="mapCanvas"></div>
                </div>
     }
@@ -64,11 +61,16 @@ class GMap extends Component {
 
     createCircles(){
         this.props.cities.forEach(city => {
-            this.createCircle({lat: city.latitude, lng: city.longitude});
+            let opts = {
+                center: { lat: city.latitude, lng: city.longitude},
+                radius: city.radius
+            };
+
+            this.createCircle(opts);
         });
     }
 
-    createCircle(center) {
+    createCircle(opts) {
 
         new google.maps.Circle({
                 strokeColor: '#FF0000',
@@ -77,8 +79,8 @@ class GMap extends Component {
                 fillColor: '#FF0000',
                 fillOpacity: 0.35,
                 map: this.map,
-                center: center,
-                radius: 100000
+                center: opts.center,
+                radius: opts.radius * 1000
             });
      }
 
