@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { chai } from 'meteor/practicalmeteor:chai';
 import Task from '../Task.jsx';
 
-describe('Gmap component', () => {
+describe('Task component', () => {
     it('should render', () => {
         // const task = Factory.build('task', { text: 'testing', checked: false });
         const item = shallow(<Task key={1} task={{}}  />);
