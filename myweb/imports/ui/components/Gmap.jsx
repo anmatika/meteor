@@ -68,6 +68,7 @@ class GMap extends Component {
             };
 
             let circle = this.createCircle(opts);
+            /* this.createInfoWindowForMarker(circle, city);*/
             circles.push(circle);
         });
         return circles;
