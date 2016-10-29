@@ -3,7 +3,7 @@ import {
   Router,
   Route,
   IndexRoute,
-  browserHistory
+  browserHistory,
 } from 'react-router';
 
 // route components
@@ -16,14 +16,14 @@ import FrontPage from '../../ui/pages/FrontPage.jsx';
 import Rent from '../../ui/pages/Rent.jsx';
 
 export const renderRoutes = () => (
-<Router history={browserHistory}>
+  <Router history={browserHistory}>
     <Route path="/" component={App} >
-        <IndexRoute component={FrontPage} />
-        <Route path="rent" component={Rent}/>
-        <Route path="helsinki" component={Helsinki}/>
-        <Route path="vantaa" component={Vantaa}/>
-        <Route path="tasks" component={Tasks}/>
+      <IndexRoute component={FrontPage} />
+      <Route path="rent" component={Rent} />
+      <Route path="helsinki" component={Helsinki} />
+      <Route path="vantaa" component={Vantaa} />
+      <Route path="tasks" component={Tasks} />
     </Route>
-    <Route path="*" component={NotFoundPage}/>
-</Router>
+    <Route path="*" component={NotFoundPage} />
+  </Router>
 );

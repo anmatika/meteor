@@ -9,7 +9,7 @@ class Vantaa extends Component {
     }
     getData(){
         var that = this;
-        openDataService.prototype.getVantaaOpenVacancies()
+        openDataService.getVantaaOpenVacancies()
             .then((response) => {
                 console.log(response);
                 that.setState({ data: response.data });

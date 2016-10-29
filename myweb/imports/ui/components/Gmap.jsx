@@ -1,129 +1,128 @@
+/* globals google, $ */
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+
 class GMap extends Component {
-    constructor(){
-        super();
-        this.state = {
-            zoom: 5
-        };
-    }
-    render() {
-        return <div className="GMap" >
-                    <div className='GMap-canvas' ref="mapCanvas"></div>
-               </div>
-    }
+  constructor() {
+    super();
+    this.state = {
+      zoom: 5,
+    };
+  }
+  render() {
+    return (<div className="GMap" >
+      <div className="GMap-canvas" ref="mapCanvas" />
+    </div>);
+  }
 
-    componentDidMount() {
-        $.getScript('https://www.google.com/jsapi', ()=>
-        {
-            google.load('maps', '3', { other_params: 'sensor=false', callback: ()=>
-            {
-                this.init();
-            }});
-        });
-    }
+  componentDidMount() {
+    $.getScript('https://www.google.com/jsapi', () => {
+        google.load('maps', '3', { other_params: 'sensor=false',
+          callback: () => {
+            this.init();
+      } });
+    });
+  }
 
-    init(){
-
+  init() {
         // create the map, marker and infoWindow after the component has
         // been rendered because we need to manipulate the DOM for Google =(
-        this.map = this.createMap()
+    this.map = this.createMap();
 
-        this.markers = this.createMarkers()
-        this.circles = this.createCircles();
+    this.markers = this.createMarkers();
+    this.circles = this.createCircles();
 
         // have to define google maps event listeners here too
         // because we can't add listeners on the map until its created
-        google.maps.event.addListener(this.map, 'zoom_changed', () => this.handleZoomChange())
-    }
+    google.maps.event.addListener(this.map, 'zoom_changed', () => this.handleZoomChange());
+  }
 
     // clean up event listeners when component unmounts
-    componentDidUnMount() {
-        google.maps.event.clearListeners(map, 'zoom_changed')
-    }
+  componentDidUnMount() {
+    google.maps.event.clearListeners(map, 'zoom_changed');
+  }
 
 
-    createMap() {
-        let mapOptions = {
-            zoom: this.state.zoom,
-            center: this.mapCenter()
-        }
-        return new google.maps.Map(this.refs.mapCanvas, mapOptions)
-    }
+  createMap() {
+    const mapOptions = {
+      zoom: this.state.zoom,
+      center: this.mapCenter(),
+    };
+    return new google.maps.Map(this.refs.mapCanvas, mapOptions);
+  }
 
-    mapCenter() {
-        return new google.maps.LatLng(
+  mapCenter() {
+    return new google.maps.LatLng(
             this.props.initialCenter.lat,
             this.props.initialCenter.lng
-        )
-    }
+        );
+  }
 
-    createCircles(){
-        let circles = [];
-        this.props.cities.forEach(city => {
-            let opts = {
-                center: { lat: city.latitude, lng: city.longitude},
-                radius: city.radius,
-                color: this.getCircleColor(city)
-            };
+  createCircles() {
+    const circles = [];
+    this.props.cities.forEach((city) => {
+      const opts = {
+        center: { lat: city.latitude, lng: city.longitude },
+        radius: city.radius,
+        color: this.getCircleColor(city),
+      };
 
-            let circle = this.createCircle(opts);
+      const circle = this.createCircle(opts);
             /* this.createInfoWindowForMarker(circle, city);*/
-            circles.push(circle);
-        });
-        return circles;
+      circles.push(circle);
+    });
+    return circles;
+  }
+
+  getCircleColor(city) {
+    if (city.avgPricePerSqm < 10) {
+      return {
+        fillColor: '#00cc00',
+        strokeColor: '#00cc00',
+      };
+    } else if (city.avgPricePerSqm >= 10 && city.avgPricePerSqm < 15) {
+      return {
+        fillColor: '#ffcc66',
+        strokeColor: '#ffcc66',
+      };
     }
 
-    getCircleColor(city){
-        if(city.avgPricePerSqm < 10){
-            return {
-                fillColor: '#00cc00',
-                strokeColor: '#00cc00',
-            }
-        } else if(city.avgPricePerSqm >= 10 && city.avgPricePerSqm < 15) {
-            return {
-                fillColor: '#ffcc66',
-                strokeColor: '#ffcc66',
-            }
-        }
+    return {
+      fillColor: '#FF0000',
+      strokeColor: '#FF0000',
+    };
+  }
 
-        return {
-            fillColor: '#FF0000',
-            strokeColor: '#FF0000',
-        }
-    }
+  createCircle(opts) {
+    return new google.maps.Circle({
+      strokeColor: opts.color.strokeColor,
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: opts.color.fillColor,
+      fillOpacity: 0.35,
+      map: this.map,
+      center: opts.center,
+      radius: opts.radius * 1000,
+    });
+  }
 
-    createCircle(opts) {
+  createMarkers() {
+    const markers = [];
+    this.props.cities.forEach((city) => {
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(city.latitude, city.longitude),
+        map: this.map,
+      });
+      this.createInfoWindowForMarker(marker, city);
+      markers.push(marker);
+    });
 
-       return new google.maps.Circle({
-                strokeColor: opts.color.strokeColor,
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: opts.color.fillColor,
-                fillOpacity: 0.35,
-                map: this.map,
-                center: opts.center,
-                radius: opts.radius * 1000
-            });
-     }
+    return markers;
+  }
 
-    createMarkers() {
-        let markers = [];
-        this.props.cities.forEach(city => {
-                let marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(city.latitude, city.longitude),
-                        map: this.map,
-                    })
-                this.createInfoWindowForMarker(marker, city);
-                markers.push(marker);
-            })
-
-        return markers;
-    }
-
-    createInfoWindowForMarker(marker, city){
-        var infowindow = new google.maps.InfoWindow();
-        let contentString = `<div class="card">
+  createInfoWindowForMarker(marker, city) {
+    const infowindow = new google.maps.InfoWindow();
+    const contentString = `<div class="card">
                                 <div class="card-block">
                                     <h4 class="card-title">${city.name}</h4>
                                     <p class="card-text"></p>
@@ -136,27 +135,27 @@ class GMap extends Component {
                                 </div>
                             </div>`;
 
-        google.maps.event.addListener(marker, 'mouseover', function() {
-            infowindow.setContent(contentString);
-            infowindow.open(this.map, marker);
-        });
+    google.maps.event.addListener(marker, 'mouseover', function () {
+      infowindow.setContent(contentString);
+      infowindow.open(this.map, marker);
+    });
 
-        google.maps.event.addListener(marker, 'mouseout', function() {
-            infowindow.close();
-        });
-    }
+    google.maps.event.addListener(marker, 'mouseout', () => {
+      infowindow.close();
+    });
+  }
 
-    handleZoomChange() {
-        this.setState({
-            zoom: this.map.getZoom()
-        })
-    }
+  handleZoomChange() {
+    this.setState({
+      zoom: this.map.getZoom(),
+    });
+  }
 }
 
 GMap.propTypes = {
-    initialCenter: PropTypes.objectOf(PropTypes.number).isRequired
-}
-export default createContainer(() => {
-    return {
-    };
-}, GMap);
+  initialCenter: PropTypes.objectOf(PropTypes.number).isRequired,
+};
+export default createContainer(() =>
+     ({
+     })
+, GMap);
